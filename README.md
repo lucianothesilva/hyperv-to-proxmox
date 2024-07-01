@@ -44,7 +44,7 @@ Now time for the export to qcow2
 
 Browse to the Qemu-img application that has been downloaded via powershell admin then run the command, change your settings as desired. For us the command was:
 
-ADD COMMAND HERE
+`.\qemu-img.exe convert ‘D:\Hyperv\Virtual Hard Disks\SRVTeste.vhdx’ -O qcow2 D:\Migrar\SRVTeste.qcow2`
 
 When you start running this command, there is no sort of feedback in the powershell console window so be patient.
 
@@ -77,5 +77,5 @@ After this is done transfer the .qcow2 file to proxmox via Filezilla, using ssh 
 
 Once the transfer is finished go back into the Proxmox shell and run the following command:
 
-COMANDO
+`qm set 101 -scsi0 local:101/SRVOmegaTeste.qcow2`
 
