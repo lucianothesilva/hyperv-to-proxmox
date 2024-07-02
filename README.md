@@ -79,3 +79,6 @@ Once the transfer is finished go back into the Proxmox shell and run the followi
 
 `qm set 101 -scsi0 local:101/SRVOmegaTeste.qcow2`
 
+Switch the BIOS type in Hardware Settings of the VM from Default to OVMF to enable UEFI 
+
+![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/6be2cf3b-db82-46e6-b255-8593fb2db94b)
