@@ -73,7 +73,9 @@ So we need to create the 103 folder and then give it the correct permissions:
 
 `chmod 740 /var/lib/vz/images/103`
 
-After this is done transfer the .qcow2 file to proxmox via Filezilla, using ssh credentials over port 22.
+After this is done transfer the .qcow2 file to this folder via Filezilla, using ssh credentials over port 22.
+
+(In my environment this was note the correct path, but I was unable to copy to the proper one due to a bug, so I did everything in here then moved the file via the web interface)
 
 Once the transfer is finished go back into the Proxmox shell and run the following command:
 
@@ -82,3 +84,31 @@ Once the transfer is finished go back into the Proxmox shell and run the followi
 Switch the BIOS type in Hardware Settings of the VM from Default to OVMF to enable UEFI 
 
 ![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/6be2cf3b-db82-46e6-b255-8593fb2db94b)
+
+
+**IF BSOD**
+Attach virtio ISO in the machine CD/DVD drive.
+
+![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/74f0c53e-02bf-4073-a15c-aedd554c275d)
+
+
+Boot to revcovery mode, open cmd and run `diskpart` > `list disk`
+
+If no disk is available:
+
+Exit diskpart and run drvload `D:\vioscsi\2k12r2\amd64\vioscsi.inf` (change the OS to yours)
+
+When I now do a “list volume” I am able to see that the letter “C” has been assigned to the operating system installation
+
+Run `dism /image:E:\ /add-driver /Driver:D:\ /recurse`
+
+C: is my letter for Windows
+
+D: is my letter for the virtio drivers image disc
+
+Boot up the VM, should be running smoothly.
+
+(After this I had to move the machine to /dev/iscsi-v wich was my iscsi storage)
+
+![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/2d474926-52ad-4d71-92ea-1dfd2dd15e3a)
+
