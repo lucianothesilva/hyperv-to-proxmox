@@ -87,6 +87,7 @@ Switch the BIOS type in Hardware Settings of the VM from Default to OVMF to enab
 
 
 **IF BSOD**
+
 Attach virtio ISO in the machine CD/DVD drive.
 
 ![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/74f0c53e-02bf-4073-a15c-aedd554c275d)
