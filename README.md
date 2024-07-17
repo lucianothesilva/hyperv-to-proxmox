@@ -8,8 +8,8 @@ Sourced from [broadband09](https://broadband9.co.uk/how-to-migrate-hyper-v-vhdx-
 | Name | Version |
 |------|---------|
 | <a name="Virtio Drivers"></a> [Virtio Drivers](https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.215-2/virtio-win.iso) | 0.1.215-2 |
-| <a name="Qemu "></a> [Qemu ](https://opentofu.org/docs/intro/install/](https://cloudbase.it/qemu-img-windows/)) |x |
-| <a name="FileZilla "></a> [FileZilla ](https://opentofu.org/docs/intro/install/](https://cloudbase.it/qemu-img-windows/](https://filezilla-project.org/download.php))) |x |
+| <a name="Qemu "></a> [Qemu ](https://cloudbase.it/qemu-img-windows/) |x |
+| <a name="FileZilla "></a> [FileZilla ](https://cloudbase.it/qemu-img-windows/](https://filezilla-project.org/download.php)) |x |
 
 **Prepare the Hyper-v VM with Virtio Drivers**
 
