@@ -51,7 +51,10 @@ Browse to the Qemu-img application that has been downloaded via powershell admin
 
 Create a Virtual Machine on the Proxmox server without a Virtual disk and without a Network Device (for now)
 
-Make sure to add a EFI disk in the System tab.
+If the machine was set with UEFI make sure to add OVMF and a EFI disk in the System tab.
+
+![image](https://github.com/user-attachments/assets/d013942b-45dd-4138-81fd-d2e2d5d31c3f)
+
 
 Well, the proxmox wizard when creating a VM forces you to create a Virtual machine disk, just set the size to 1GB, then after it’s created, go into it and “Detach” and “Remove” that disk.
 
