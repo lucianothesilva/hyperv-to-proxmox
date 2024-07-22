@@ -77,7 +77,7 @@ So we need to create the 103 folder and then give it the correct permissions:
 
 After this is done transfer the .qcow2 file to this folder via Filezilla, using ssh credentials over port 22.
 
-Once the transfer is finished go back into the Proxmox shell and run the following command:
+Once the transfer is finished go back into the pve shell and run the following command:
 
 `qm set 103 -scsi0 local:103/mymachine.qcow2`
 
