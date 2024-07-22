@@ -122,7 +122,7 @@ If no disk is available:
 
 Exit diskpart and run `drvload D:\vioscsi\2k12r2\amd64\vioscsi.inf` (change the OS to yours)
 
-When I now do a “list volume” I am able to see that the letter “C” has been assigned to the operating system installation, if not run:
+When I now open **diskpart** again and run `list volume` I am able to see that the letter “C” has been assigned to the operating system installation, if not run:
 
 `select volume 1` (or the one of your drive)
 
