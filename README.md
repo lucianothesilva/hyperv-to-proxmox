@@ -44,7 +44,7 @@ Now time for the export to qcow2
 
 Browse to the Qemu-img application that has been downloaded via powershell admin then run the command, change your settings as desired. For us the command was:
 
-`.\qemu-img.exe convert ‘D:\Hyperv\Virtual Hard Disks\SRVTest.vhdx’ -O raw D:\Migrar\SRVTest.raw -p`
+`.\qemu-img.exe convert ‘D:\Hyperv\Virtual Hard Disks\mymachine.vhdx’ -O raw D:\Migrate\mymachine.raw -p`
 
 
  **Proxmox Preparations:**
@@ -79,7 +79,7 @@ After this is done transfer the .qcow2 file to this folder via Filezilla, using 
 
 Once the transfer is finished go back into the Proxmox shell and run the following command:
 
-`qm set 103 -scsi0 local:103/SRVOmegaTeste.qcow2`
+`qm set 103 -scsi0 local:103/mymachine.qcow2`
 
 Switch the BIOS type in Hardware Settings of the VM from Default to OVMF to enable UEFI 
 
@@ -96,7 +96,13 @@ Create a new logical volume in the iscsi volume group for the vm:
 
 On the Windows Server copy the file to the created logical volume:
 
-`scp .\SRVTest.raw root@192.168.0.201:/dev/iscsi-vg/vm-103-disk-1`
+`scp .\mymachine.raw root@192.168.0.201:/dev/iscsi-vg/vm-103-disk-1`
+
+Set the logical volume to the VM
+
+`qm set 103 -scsi0 iscsi-lvm:vm-103-disk-1`
+
+
 
 **IF BSOD**
 
