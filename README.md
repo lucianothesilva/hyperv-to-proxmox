@@ -90,6 +90,8 @@ Switch the BIOS type in Hardware Settings of the VM from Default to OVMF to enab
 
 The new Virtual Machine has been assigned a new VM id which in our case is 103.
 
+In the Proxmox interface detach and remove the 1GB disk that was created.
+
 Create a new logical volume in the iscsi volume group for the vm, open the pve shell and run:
 
 `lvcreate -L 250GB -n vm-103-disk-1 iscsi-vg`
