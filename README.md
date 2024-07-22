@@ -44,15 +44,14 @@ Now time for the export to qcow2
 
 Browse to the Qemu-img application that has been downloaded via powershell admin then run the command, change your settings as desired. For us the command was:
 
-`.\qemu-img.exe convert ‘D:\Hyperv\Virtual Hard Disks\SRVTeste.vhdx’ -O qcow2 D:\Migrar\SRVTeste.qcow2`
+`.\qemu-img.exe convert ‘D:\Hyperv\Virtual Hard Disks\SRVTest.vhdx’ -O raw D:\Migrar\SRVTest.raw -p`
 
-When you start running this command, there is no sort of feedback in the powershell console window so be patient.
-
-You can check the progress by going to the output directory and looking at the current file properties of the file to see how much it has done so far.
 
  **Proxmox Preparations:**
 
 Create a Virtual Machine on the Proxmox server without a Virtual disk and without a Network Device (for now)
+
+Make sure to add a EFI disk in the System tab.
 
 Well, the proxmox wizard when creating a VM forces you to create a Virtual machine disk, just set the size to 1GB, then after it’s created, go into it and “Detach” and “Remove” that disk.
 
@@ -60,9 +59,8 @@ Go into the Proxmox VM settings and change the OS Type to Windows (if you didn�
 
 ![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/17f6dc4e-89cf-4fca-9118-a3b4d328ff15)
 
-As you can see the Hardware settings of the Virtual Machine is without both network adapter and without the disk:
 
-![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/15f42128-8b24-4b0c-b116-e7b65a33977c)
+**Migrate to pve local storage:**
 
 The new Virtual Machine has been assigned a new VM id which in our case is 103.
 So we want to place this vDisk in the directory relating to this VM folder.
@@ -75,16 +73,25 @@ So we need to create the 103 folder and then give it the correct permissions:
 
 After this is done transfer the .qcow2 file to this folder via Filezilla, using ssh credentials over port 22.
 
-(In my environment this was note the correct path, but I was unable to copy to the proper one due to a bug, so I did everything in here then moved the file via the web interface)
-
 Once the transfer is finished go back into the Proxmox shell and run the following command:
 
-`qm set 101 -scsi0 local:101/SRVOmegaTeste.qcow2`
+`qm set 103 -scsi0 local:103/SRVOmegaTeste.qcow2`
 
 Switch the BIOS type in Hardware Settings of the VM from Default to OVMF to enable UEFI 
 
 ![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/6be2cf3b-db82-46e6-b255-8593fb2db94b)
 
+
+**Migrate to iscsi storage:**
+The new Virtual Machine has been assigned a new VM id which in our case is 103.
+
+Create a new logical volume in the iscsi volume group for the vm:
+
+`lvcreate -L 250GB -n vm-103-disk-1 iscsi-vg`
+
+On the Windows Server copy the file to the created logical volume:
+
+`scp .\SRVTest.raw root@192.168.0.201:/dev/iscsi-vg/vm-103-disk-1`
 
 **IF BSOD**
 
