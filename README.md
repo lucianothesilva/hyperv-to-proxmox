@@ -139,7 +139,3 @@ C: is my letter for the Windows drive.
 D: is my letter for the virtio drivers image disc.
 
 Boot up the VM, should be running smoothly.
-
-
-![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/2d474926-52ad-4d71-92ea-1dfd2dd15e3a)
-
