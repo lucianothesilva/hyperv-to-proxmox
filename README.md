@@ -90,7 +90,7 @@ Switch the BIOS type in Hardware Settings of the VM from Default to OVMF to enab
 
 The new Virtual Machine has been assigned a new VM id which in our case is 103.
 
-Create a new logical volume in the iscsi volume group for the vm:
+Create a new logical volume in the iscsi volume group for the vm, open the pve shell and run:
 
 `lvcreate -L 250GB -n vm-103-disk-1 iscsi-vg`
 
@@ -98,7 +98,7 @@ On the Windows Server copy the file to the created logical volume:
 
 `scp .\mymachine.raw root@192.168.0.201:/dev/iscsi-vg/vm-103-disk-1`
 
-Set the logical volume to the VM
+Set the logical volume to the VM (via the pve shell)
 
 `qm set 103 -scsi0 iscsi-lvm:vm-103-disk-1`
 
