@@ -60,6 +60,10 @@ Go into the Proxmox VM settings and change the OS Type to Windows (if you didnâ€
 ![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/17f6dc4e-89cf-4fca-9118-a3b4d328ff15)
 
 
+## 2 types of storage migration
+
+Choose the one for your scenario
+
 **Migrate to pve local storage:**
 
 The new Virtual Machine has been assigned a new VM id which in our case is 103.
@@ -83,6 +87,7 @@ Switch the BIOS type in Hardware Settings of the VM from Default to OVMF to enab
 
 
 **Migrate to iscsi storage:**
+
 The new Virtual Machine has been assigned a new VM id which in our case is 103.
 
 Create a new logical volume in the iscsi volume group for the vm:
