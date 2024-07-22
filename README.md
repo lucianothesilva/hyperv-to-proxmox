@@ -1,5 +1,5 @@
 # hyperv-to-proxmox
-How to migrate Hyper-v vhdx VM to Proxmox qcow2, for local storage or sc
+How to migrate Hyper-v vhdx VM to Proxmox, for local storage or scsi storage.
 
 Sourced from [broadband09](https://broadband9.co.uk/how-to-migrate-hyper-v-vhdx-vm-to-proxmox-qcow2/) with some changes for my environment.
 
