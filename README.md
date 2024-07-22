@@ -122,17 +122,24 @@ If no disk is available:
 
 Exit diskpart and run `drvload D:\vioscsi\2k12r2\amd64\vioscsi.inf` (change the OS to yours)
 
-When I now do a “list volume” I am able to see that the letter “C” has been assigned to the operating system installation
+When I now do a “list volume” I am able to see that the letter “C” has been assigned to the operating system installation, if not run:
+
+`select volume 1` (or the one of your drive)
+
+`assign letter=C`
+
+`list volume`
+
+To inall the drivers run:
 
 Run `dism /image:C:\ /add-driver /Driver:D:\ /recurse`
 
-C: is my letter for Windows
+C: is my letter for the Windows drive.
 
-D: is my letter for the virtio drivers image disc
+D: is my letter for the virtio drivers image disc.
 
 Boot up the VM, should be running smoothly.
 
-(After this I had to move the machine to /dev/iscsi-v wich was my iscsi storage)
 
 ![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/2d474926-52ad-4d71-92ea-1dfd2dd15e3a)
 
