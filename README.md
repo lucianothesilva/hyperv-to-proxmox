@@ -39,24 +39,16 @@ Then install the correct msi inside the “guest-agent” folder:
 
 After this step you can shutdown the Virtual machine ready to convert and export the new Disk to use inside of Proxmox.
 
-Exporting VHDx to Qcow2 format using qemu-img.exe
-Now time for the export to qcow2
+Exporting VHDx to .raw format using qemu-img.exe
+Now time for the export to .raw
 
 Browse to the Qemu-img application that has been downloaded via powershell admin then run the command, change your settings as desired. For us the command was:
 
 `.\qemu-img.exe convert ‘D:\Hyperv\Virtual Hard Disks\mymachine.vhdx’ -O raw D:\Migrate\mymachine.raw -p`
 
 
- **Proxmox Preparations:**
-
-Create a Virtual Machine on the Proxmox server without a Virtual disk and without a Network Device (for now)
-
-If the machine was set with UEFI make sure to add OVMF and a EFI disk in the System tab.
-
-![image](https://github.com/user-attachments/assets/d013942b-45dd-4138-81fd-d2e2d5d31c3f)
 
 
-Well, the proxmox wizard when creating a VM forces you to create a Virtual machine disk, just set the size to 1GB, then after it’s created, go into it and “Detach” and “Remove” that disk.
 
 Go into the Proxmox VM settings and change the OS Type to Windows (if you didn’t do it at the creation wizard) and enable the “QEMU Guest Agent” setting:
 
@@ -67,7 +59,19 @@ Go into the Proxmox VM settings and change the OS Type to Windows (if you didn�
 
 Choose the one for your scenario
 
-**Migrate to pve local storage:**
+## **Migrate to pve local storage:**
+
+Create a Virtual Machine on the Proxmox server without a Virtual disk and without a Network Device (for now)
+
+If the machine was set with UEFI make sure to add OVMF and a EFI disk in the System tab.
+
+![image](https://github.com/user-attachments/assets/d013942b-45dd-4138-81fd-d2e2d5d31c3f)
+
+In the proxmox wizard when creating the VM forces you to create a virtual machine disk, just set the size to 1GB, then after it’s created, go into it and “Detach” and “Remove” that disk.
+
+Go into the Proxmox VM settings and change the OS Type to Windows (if you didn’t do it at the creation wizard) and enable the “QEMU Guest Agent” setting:
+
+![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/17f6dc4e-89cf-4fca-9118-a3b4d328ff15)
 
 The new Virtual Machine has been assigned a new VM id which in our case is 103.
 So we want to place this vDisk in the directory relating to this VM folder.
@@ -78,34 +82,37 @@ So we need to create the 103 folder and then give it the correct permissions:
 
 `chmod 740 /var/lib/vz/images/103`
 
-After this is done transfer the .qcow2 file to this folder via Filezilla, using ssh credentials over port 22.
+After this is done transfer the .raw file to this folder via Filezilla, using ssh credentials over port 22.
 
 Once the transfer is finished go back into the pve shell and run the following command:
 
-`qm set 103 -scsi0 local:103/mymachine.qcow2`
+`qm set 103 -scsi0 local:103/mymachine.raw`
 
 Switch the BIOS type in Hardware Settings of the VM from Default to OVMF to enable UEFI 
 
 ![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/6be2cf3b-db82-46e6-b255-8593fb2db94b)
 
 
-**Migrate to iscsi storage:**
+## **Migrate to iscsi storage:**
+
+Create a Virtual Machine on the Proxmox server without a Virtual disk and without a Network Device (for now)
+
+If the machine was set with UEFI make sure to add OVMF and a EFI disk in the System tab.
+
+![image](https://github.com/user-attachments/assets/d013942b-45dd-4138-81fd-d2e2d5d31c3f)
+
+Go into the Proxmox VM settings and change the OS Type to Windows (if you didn’t do it at the creation wizard) and enable the “QEMU Guest Agent” setting:
+
+![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/17f6dc4e-89cf-4fca-9118-a3b4d328ff15)
+
+
+In the Proxmox wizard when creating the virtual machine disk, just set the size to the same as the .raw file.
 
 The new Virtual Machine has been assigned a new VM id which in our case is 103.
 
-In the Proxmox interface detach and remove the 1GB disk that was created.
+So we must copy the .raw file to the volume of the machine, to do it on the Windows Server run:
 
-Create a new logical volume in the iscsi volume group for the vm, open the pve shell and run:
-
-`lvcreate -L 250GB -n vm-103-disk-1 iscsi-vg`
-
-On the Windows Server copy the file to the created logical volume:
-
-`scp .\mymachine.raw root@192.168.0.201:/dev/iscsi-vg/vm-103-disk-1`
-
-Set the logical volume to the VM (via the pve shell)
-
-`qm set 103 -scsi0 iscsi-lvm:vm-103-disk-1`
+`scp .\mymachine.raw root@192.168.0.xxx:/dev/iscsi-vg/vm-103-disk-1`
 
 
 
@@ -116,11 +123,15 @@ Attach virtio ISO in the machine CD/DVD drive.
 ![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/74f0c53e-02bf-4073-a15c-aedd554c275d)
 
 
-Boot to revcovery mode, open cmd and run `diskpart` > `list disk`
+Boot to revcovery mode (and if it doesnt attach a Windows ISO and boot from it), open cmd and run 
+
+`diskpart` > `list disk`
 
 If no disk is available:
 
-Exit diskpart and run `drvload D:\vioscsi\2k12r2\amd64\vioscsi.inf` (change the OS to yours)
+Exit diskpart and run 
+
+`drvload D:\vioscsi\2k12r2\amd64\vioscsi.inf` (change the OS to yours)
 
 When I now open **diskpart** again and run `list volume` I am able to see that the letter “C” has been assigned to the operating system installation, if not run on diskpart:
 
