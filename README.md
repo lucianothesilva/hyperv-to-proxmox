@@ -55,49 +55,41 @@ Go into the Proxmox VM settings and change the OS Type to Windows (if you didn�
 ![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/17f6dc4e-89cf-4fca-9118-a3b4d328ff15)
 
 
-## 2 types of storage migration
+# 2 types of storage migration
 
-Choose the one for your scenario
+Choose the one for your scenario.
 
 ## **Migrate to pve local storage:**
 
-Create a Virtual Machine on the Proxmox server without a Virtual disk and without a Network Device (for now)
-
-If the machine was set with UEFI make sure to add OVMF and a EFI disk in the System tab.
+Create a Virtual Machine on Proxmox, if the machine was set with UEFI make sure to set the BIOS to OVMF(UEFI) and add a EFI storage, also check the Qemu Agent checkbox.
 
 ![image](https://github.com/user-attachments/assets/d013942b-45dd-4138-81fd-d2e2d5d31c3f)
 
-In the proxmox wizard when creating the VM forces you to create a virtual machine disk, just set the size to 1GB, then after it’s created, go into it and “Detach” and “Remove” that disk.
+In the proxmox wizard when creating the VM it forces you to create a virtual machine disk, just set the size to 1GB, then after it’s created, go into it and “Detach” and “Remove” that disk.
 
 Go into the Proxmox VM settings and change the OS Type to Windows (if you didn’t do it at the creation wizard) and enable the “QEMU Guest Agent” setting:
 
 ![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/17f6dc4e-89cf-4fca-9118-a3b4d328ff15)
 
-The new Virtual Machine has been assigned a new VM id which in our case is 103.
-So we want to place this vDisk in the directory relating to this VM folder.
-In our case the location will be `/var/lib/vz/images/`
-So we need to create the 103 folder and then give it the correct permissions:
+The new Virtual Machine has been assigned a new VM ID which in our case is 103.
+So we want to place this disk in the directory relating to this VM folder.
+The location will be `/var/lib/vz/images/`
+So we need to create the folder for the machine with id 103 and then give it the correct permissions:
 
 `mkdir /var/lib/vz/images/103`
 
 `chmod 740 /var/lib/vz/images/103`
 
-After this is done transfer the .raw file to this folder via Filezilla, using ssh credentials over port 22.
+After this is done transfer the .raw file to this folder via Filezilla, using the Proxmox credentials.
 
 Once the transfer is finished go back into the pve shell and run the following command:
 
 `qm set 103 -scsi0 local:103/mymachine.raw`
 
-Switch the BIOS type in Hardware Settings of the VM from Default to OVMF to enable UEFI 
-
-![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/6be2cf3b-db82-46e6-b255-8593fb2db94b)
-
 
 ## **Migrate to iscsi storage:**
 
-Create a Virtual Machine on the Proxmox server without a Virtual disk and without a Network Device (for now)
-
-If the machine was set with UEFI make sure to add OVMF and a EFI disk in the System tab.
+Create a new VM on Proxmox, if the machine you're migrating was set with UEFI, make sure to set the BIOS to OVMF(UEFI) and add a EFI storage, also check the Qemu Agent checkbox.
 
 ![image](https://github.com/user-attachments/assets/d013942b-45dd-4138-81fd-d2e2d5d31c3f)
 
