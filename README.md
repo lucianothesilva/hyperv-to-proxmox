@@ -11,6 +11,29 @@ Sourced from [broadband09](https://broadband9.co.uk/how-to-migrate-hyper-v-vhdx-
 | <a name="Qemu "></a> [Qemu ](https://cloudbase.it/qemu-img-windows/) |2.3.0 |
 | <a name="FileZilla "></a> [FileZilla ](https://cloudbase.it/qemu-img-windows/](https://filezilla-project.org/download.php)) |3.67.1|
 
+Steps:
+1 - Install Virtio Drivers
+
+2 - Export the machine from Hyperv
+
+3 - Convert the .vhdx to .raw
+
+4.A - Move to local storage 
+
+  1 - Create a VM in Proxmox
+  
+  2 - Create Folder for machine
+  
+  3 - Copy the .raw to the vm folder
+  
+4.B - Move to iscsi storage
+
+  1 - Create a VM in Proxmox
+  
+  2 - Copy the .raw to the vm disk
+  
+
+
 **Prepare the Hyper-v VM with Virtio Drivers**
 
 
@@ -47,9 +70,6 @@ Browse to the Qemu-img application that has been downloaded via powershell admin
 `.\qemu-img.exe convert ‘D:\Hyperv\Virtual Hard Disks\mymachine.vhdx’ -O raw D:\Migrate\mymachine.raw -p`
 
 
-
-
-
 Go into the Proxmox VM settings and change the OS Type to Windows (if you didn’t do it at the creation wizard) and enable the “QEMU Guest Agent” setting:
 
 ![image](https://github.com/lucianothesilva/hyperv-to-proxmox/assets/20344783/17f6dc4e-89cf-4fca-9118-a3b4d328ff15)
@@ -74,7 +94,7 @@ Go into the Proxmox VM settings and change the OS Type to Windows (if you didn�
 The new Virtual Machine has been assigned a new VM ID which in our case is 103.
 So we want to place this disk in the directory relating to this VM folder.
 The location will be `/var/lib/vz/images/`
-So we need to create the folder for the machine with id 103 and then give it the correct permissions:
+To do this we need to create the folder for the machine with id 103 and then give it the correct permissions:
 
 `mkdir /var/lib/vz/images/103`
 
@@ -106,7 +126,7 @@ So we must copy the .raw file to the volume of the machine, to do it on the Wind
 
 `scp .\mymachine.raw root@192.168.0.xxx:/dev/iscsi-vg/vm-103-disk-1`
 
-
+Start the machine.
 
 **IF BSOD**
 
