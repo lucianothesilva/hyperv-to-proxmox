@@ -12,25 +12,25 @@ Sourced from [broadband09](https://broadband9.co.uk/how-to-migrate-hyper-v-vhdx-
 | <a name="FileZilla "></a> [FileZilla ](https://cloudbase.it/qemu-img-windows/](https://filezilla-project.org/download.php)) |3.67.1|
 
 Steps:
-1 - Install Virtio Drivers
+1. Install Virtio Drivers
 
-2 - Export the machine from Hyperv
+2. Export the machine from Hyperv
 
-3 - Convert the .vhdx to .raw
+3. Convert the .vhdx to .raw
 
-4.A - Move to local storage 
+4. Move to local storage 
 
-  1 - Create a VM in Proxmox
+    1. Create a VM in Proxmox
   
-  2 - Create Folder for machine
+    2. Create Folder for machine
   
-  3 - Copy the .raw to the vm folder
+    3. Copy the .raw to the vm folder
   
-4.B - Move to iscsi storage
+5. Move to iscsi storage
 
-  1 - Create a VM in Proxmox
+    1. Create a VM in Proxmox
   
-  2 - Copy the .raw to the vm disk
+    2. Copy the .raw to the vm disk
   
 
 
